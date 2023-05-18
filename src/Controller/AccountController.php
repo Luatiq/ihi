@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,20 +27,36 @@ class AccountController extends AbstractController
 
     #[Route('/register', name: '.register')]
     public function register(
-        ?User $entity,
+        ?User                       $entity,
         UserPasswordHasherInterface $passwordHasher,
-        Request $request
+        Request                     $request
     ): Response {
+        // @TODO move to event listener?
+        if ($this->getUser()) {
+            return $this->redirectToRoute('account.view');
+        }
+
         if (!$entity) $entity = new User();
 
         $form = $this->createForm(UserType::class, $entity);
 
         $form->handleRequest($request);
+
+        if (
+            $this->repository->findOneBy([
+                'username' => $entity->getUsername()
+            ])
+        ) {
+            $form->addError(new FormError('Username has already been taken'));
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPass = $passwordHasher->hashPassword($entity, $entity->getPassword());
             $entity->setPassword($hashedPass);
 
             $this->repository->save($entity, true);
+
+            return $this->redirectToRoute('account.login');
         }
 
         return $this->render('account/edit.html.twig', [
@@ -51,6 +68,10 @@ class AccountController extends AbstractController
     public function login(
         AuthenticationUtils $authenticationUtils
     ): Response {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('account.view');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -70,8 +91,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/', name: '.view', methods: ['GET'])]
-    public function index(): Response
-    {
+    public function index(): Response {
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
         ]);
