@@ -6,12 +6,14 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/account', name: 'account')]
@@ -26,16 +28,13 @@ class AccountController extends AbstractController
     }
 
     #[Route('/register', name: '.register')]
+    // @TODO move to security voter
+    #[IsGranted(new Expression('not is_authenticated()'))]
     public function register(
         ?User                       $entity,
         UserPasswordHasherInterface $passwordHasher,
         Request                     $request
     ): Response {
-        // @TODO move to event listener?
-        if ($this->getUser()) {
-            return $this->redirectToRoute('account.view');
-        }
-
         if (!$entity) $entity = new User();
 
         $form = $this->createForm(UserType::class, $entity);
@@ -65,13 +64,11 @@ class AccountController extends AbstractController
     }
 
     #[Route('/login', name: '.login')]
+    // @TODO move to security voter
+    #[IsGranted(new Expression('not is_authenticated()'))]
     public function login(
         AuthenticationUtils $authenticationUtils
     ): Response {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('account.view');
-        }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -91,6 +88,7 @@ class AccountController extends AbstractController
     }
 
     #[Route('/', name: '.view', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response {
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
