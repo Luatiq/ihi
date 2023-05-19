@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\FormError;
@@ -31,12 +32,10 @@ class AccountController extends AbstractController
     // @TODO move to security voter
     #[IsGranted(new Expression('not is_authenticated()'))]
     public function register(
-        ?User                       $entity,
         UserPasswordHasherInterface $passwordHasher,
         Request                     $request
     ): Response {
-        if (!$entity) $entity = new User();
-
+        $entity = new User();
         $form = $this->createForm(UserType::class, $entity);
 
         $form->handleRequest($request);
@@ -50,7 +49,8 @@ class AccountController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hashedPass = $passwordHasher->hashPassword($entity, $entity->getPassword());
+            $plainPassword = $request->get('user')['password']['first'];
+            $hashedPass = $passwordHasher->hashPassword($entity, $plainPassword);
             $entity->setPassword($hashedPass);
 
             $this->repository->save($entity, true);
@@ -87,11 +87,43 @@ class AccountController extends AbstractController
         return $this->redirectToRoute('account.login');
     }
 
-    #[Route('/', name: '.view', methods: ['GET'])]
+    #[Route('/', name: '.view')]
     #[IsGranted('ROLE_USER')]
-    public function index(): Response {
-        return $this->render('account/index.html.twig', [
-            'controller_name' => 'AccountController',
+    public function index(
+        UserPasswordHasherInterface $passwordHasher,
+        Request $request
+    ): Response {
+        $entity = $this->getUser();
+        if (!$entity instanceof User) {
+            throw new Error('Invalid entity');
+        }
+
+        $oldEntity = clone $entity;
+        $form = $this->createForm(UserType::class, $entity);
+
+        $form->handleRequest($request);
+        if (
+            $oldEntity->getUsername() !== $entity->getUsername()
+            // username has been changed, let's check for dupes
+            && $this->repository->findOneBy([
+                'username' => $entity->getUsername()
+            ])
+        ) {
+            $form->addError(new FormError('Username has already been taken'));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $request->get('user')['password']['first'];
+            if ($plainPassword) {
+                $hashedPass = $passwordHasher->hashPassword($entity, $plainPassword);
+                $entity->setPassword($hashedPass);
+            }
+
+            $this->repository->save($entity, true);
+        }
+
+        return $this->render('account/edit.html.twig', [
+            'form' => $form,
         ]);
     }
 }

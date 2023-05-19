@@ -1,19 +1,23 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ 'title.login'|trans }}
+{% endblock %}
+
 {% block body %}
     <form action="{{ path('account.login') }}" method="post">
         <div class="columns is-centered is-vcentered" style="height: 100vh;">
             <div class="column is-half">
-                <h1 class="title">Login</h1>
+                <h1 class="title">{{ 'title.login'|trans }}</h1>
 
                 <div class="box">
                     <div class="field">
-                        <label class="label" for="username">Username</label>
+                        <label class="label" for="username">{{ 'label.username'|trans }}</label>
                         <input class="input" type="text" id="username" name="_username" value="{{ lastUsername }}">
                     </div>
 
                     <div class="field">
-                        <label class="label" for="password">Password</label>
+                        <label class="label" for="password">{{ 'label.password'|trans }}</label>
                         <input class="input" type="password" id="password" name="_password">
                     </div>
 
@@ -27,7 +31,7 @@
 
                     <div class="is-grouped">
                         <div class="control">
-                            <button class="button is-primary" type="submit">Login</button>
+                            <button class="button is-primary" type="submit">{{ 'button.login'|trans }}</button>
                         </div>
                     </div>
                 </div>

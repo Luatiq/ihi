@@ -1,0 +1,15 @@
+title:
+  register: "Register"
+  my_account: "My account"
+  login: "Login"
+
+button:
+  register: "Register"
+  save: "Save"
+  login: "Login"
+
+label:
+  username: "Username"
+  password: "Password"
+  repeat_password: "Repeat password"
+  change_password: "Change password"
