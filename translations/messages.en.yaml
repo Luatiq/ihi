@@ -2,11 +2,13 @@ title:
   register: "Register"
   my_account: "My account"
   login: "Login"
+  home: "Home"
 
 button:
   register: "Register"
   save: "Save"
   login: "Login"
+  logout: "Log out"
 
 label:
   username: "Username"

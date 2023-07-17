@@ -11,60 +11,12 @@
 {% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
+    <h1 class="container mt-5 px-0">{{ title|trans }}</h1>
 
-    <div
-        class="{{ not app.user ? 'columns is-centered is-vcentered' : 'container' }}"
-        style="height: 100vh;"
-    >
-        <div class="{{ not app.user ? 'column is-half' }}">
-            <h1 class="title">{{ title }}</h1>
+    <div class="card container mx-auto pt-3">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-            <div class="{{ not app.user ? 'box' }}">
-                <div class="field">
-                    {{ form_label(form.username, 'label.username', {'label_attr': {'class': 'label'}}) }}
-                    {{ form_widget(form.username, {'attr': {'class': 'input'}}) }}
-                </div>
-
-                {% if app.user %}
-                    <h2 class="subtitle is-5 mt-5 mb-2">{{ 'label.change_password'|trans }}</h2>
-                {% endif %}
-                <div class="field">
-                    {{ form_label(form.password.first, 'label.password', {'label_attr': {'class': 'label'}}) }}
-                    {{ form_widget(form.password.first, {'attr': {'class': 'input'}}) }}
-                </div>
-
-                <div class="field">
-                    {{ form_label(form.password.second, 'label.repeat_password', {'label_attr': {'class': 'label'}}) }}
-                    {{ form_widget(form.password.second, {'attr': {'class': 'input'}}) }}
-                </div>
-
-                {% if app.user %}
-                    {# @TODO stuff you can only change when you already have an account #}
-                {% endif %}
-
-                {% if not form.vars.valid %}
-                    <div class="message">
-                        <div class="notification py-2 pl-2 is-danger">
-                            {{ form_errors(form) }}
-                        </div>
-                    </div>
-                {% endif %}
-
-                <div class="is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">
-                            {% if app.user %}
-                                {{ 'button.save'|trans }}
-                            {% else %}
-                                {{ 'button.register'|trans }}
-                            {% endif %}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ form_end(form) }}
     </div>
-
-    {{ form_end(form) }}
 {% endblock %}

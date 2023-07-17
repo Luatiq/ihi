@@ -7,6 +7,8 @@ use Exception;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,12 +25,22 @@ class UserType extends AbstractType
         }
 
         $builder
-            ->add('username')
+            ->add('username', TextType::class, [
+                'label' => 'label.username'
+            ])
             ->add('password', RepeatedType::class, [
                 'mapped' => false,
                 'type' => PasswordType::class,
                 'invalid_message' => 'error.passwords_must_match',
                 'required' => !$entity->getId(),
+                'first_options'  => ['label' => 'label.password'],
+                'second_options' => ['label' => 'label.repeat_password'],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => $entity->getId() ? 'button.save' : 'button.register',
+                'attr' => [
+                    'class' => 'btn-primary',
+                ],
             ])
         ;
     }
