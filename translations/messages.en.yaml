@@ -3,15 +3,19 @@ title:
   my_account: "My account"
   login: "Login"
   home: "Home"
+  users: "Users"
 
 button:
   register: "Register"
   save: "Save"
   login: "Login"
   logout: "Log out"
+  edit: "Edit"
+  delete: "Delete"
 
 label:
   username: "Username"
   password: "Password"
   repeat_password: "Repeat password"
   change_password: "Change password"
+  actions: "Actions"

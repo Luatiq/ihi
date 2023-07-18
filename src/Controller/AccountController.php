@@ -55,6 +55,13 @@ class AccountController extends AbstractController
 
             $this->repository->save($entity, true);
 
+            // First user, set as admin
+            if ($entity->getId() === 1) {
+                $entity->setRoles(['ROLE_ADMIN']);
+
+                $this->repository->save($entity, true);
+            }
+
             return $this->redirectToRoute('account.login');
         }
 
@@ -124,6 +131,15 @@ class AccountController extends AbstractController
 
         return $this->render('account/edit.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+
+    #[Route('/overview', name: '.overview')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function overview(): Response {
+        return $this->render('account/overview.html.twig', [
+            'entities' => $this->repository->findAll(),
         ]);
     }
 }
