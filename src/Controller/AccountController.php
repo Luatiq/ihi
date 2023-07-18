@@ -94,9 +94,9 @@ class AccountController extends AbstractController
         return $this->redirectToRoute('account.login');
     }
 
-    #[Route('/', name: '.view')]
+    #[Route('', name: '.edit')]
     #[IsGranted('ROLE_USER')]
-    public function index(
+    public function edit(
         UserPasswordHasherInterface $passwordHasher,
         Request $request
     ): Response {
@@ -131,15 +131,6 @@ class AccountController extends AbstractController
 
         return $this->render('account/edit.html.twig', [
             'form' => $form,
-        ]);
-    }
-
-
-    #[Route('/overview', name: '.overview')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function overview(): Response {
-        return $this->render('account/overview.html.twig', [
-            'entities' => $this->repository->findAll(),
         ]);
     }
 }

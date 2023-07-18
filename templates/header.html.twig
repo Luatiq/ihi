@@ -11,7 +11,7 @@
                     <a class="nav-link" href="/">{{ 'title.home'|trans }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('account.overview') }}">{{ 'title.users'|trans }}</a>
+                    <a class="nav-link" href="{{ url('user.overview') }}">{{ 'title.users'|trans }}</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
@@ -21,12 +21,12 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('account.view') }}">{{ app.user.username }}</a>
+                        <a class="nav-link" href="{{ path('account.edit') }}">{{ app.user.username }}</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"></a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ path('account.view') }}">{{ 'title.my_account'|trans }}</a></li>
+                            <li><a class="dropdown-item" href="{{ path('account.edit') }}">{{ 'title.my_account'|trans }}</a></li>
                             <li><a class="dropdown-item" href="{{ path('account.logout') }}">{{ 'button.logout'|trans }}</a></li>
                         </ul>
                     </li>

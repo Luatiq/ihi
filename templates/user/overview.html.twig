@@ -16,18 +16,20 @@
             </thead>
             <tbody>
             {% for item in entities %}
+                {% set item_is_user %}{{ item.id == app.user.id }}{% endset %}
                 <tr>
                     <th scope="row">{{ item.id }}</th>
                     <td>{{ item }}</td>
                     <td>
                         <div class="btn-group" role="group" aria-label="{{ 'label.actions'|trans }}">
-                            <button type="button" class="btn btn-sm btn-primary" title="{{ 'button.edit'|trans }}">
-{#                                <a href="{{ url('user.view', {entity:item.id}) }}">{{ 'button.edit'|trans }}</a>#}
-                                {{ 'button.edit'|trans }}
-                            </button>
+                            <a href="{{ item_is_user ? url('account.edit') : url('user.edit', { entity:item.id }) }}">
+                                <button type="button" class="btn btn-sm btn-primary" title="{{ 'button.edit'|trans }}">
+                                    {{ 'button.edit'|trans }}
+                                </button>
+                            </a>
                             <button type="button"
                                     title="{{ 'button.delete'|trans }}"
-                                    class="btn btn-sm btn-danger {{ item.id == app.user.id ? 'disabled' }}">
+                                    class="btn btn-sm btn-danger {{ item_is_user ? 'disabled' }}">
                                 {{ 'button.delete'|trans }}
                             </button>
                         </div>

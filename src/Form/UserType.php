@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Exception;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -14,6 +15,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
+    private Security $security;
+
+    public function __construct(
+        Security $security
+    ) {
+        $this->security = $security;
+    }
+
     /**
      * @throws Exception
      */
@@ -28,14 +37,28 @@ class UserType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => 'label.username'
             ])
-            ->add('password', RepeatedType::class, [
-                'mapped' => false,
-                'type' => PasswordType::class,
-                'invalid_message' => 'error.passwords_must_match',
-                'required' => !$entity->getId(),
-                'first_options'  => ['label' => 'label.password'],
-                'second_options' => ['label' => 'label.repeat_password'],
-            ])
+        ;
+
+        if (
+            !$this->security->getUser()
+            || (
+                $this->security->getUser()
+                && $entity->getId() === $this->security->getUser()->getId()
+            )
+        ) {
+            $builder
+                ->add('password', RepeatedType::class, [
+                    'mapped' => false,
+                    'type' => PasswordType::class,
+                    'invalid_message' => 'error.passwords_must_match',
+                    'required' => !$entity->getId(),
+                    'first_options'  => ['label' => 'label.password'],
+                    'second_options' => ['label' => 'label.repeat_password'],
+                ])
+            ;
+        }
+
+        $builder
             ->add('submit', SubmitType::class, [
                 'label' => $entity->getId() ? 'button.save' : 'button.register',
                 'attr' => [

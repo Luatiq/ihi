@@ -4,6 +4,7 @@ title:
   login: "Login"
   home: "Home"
   users: "Users"
+  user: "User"
 
 button:
   register: "Register"
@@ -19,3 +20,6 @@ label:
   repeat_password: "Repeat password"
   change_password: "Change password"
   actions: "Actions"
+
+error:
+  passwords_must_match: "Passwords must match"
