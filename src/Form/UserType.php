@@ -39,6 +39,13 @@ class UserType extends AbstractType
             ])
         ;
 
+        if ($this->security->getUser()) {
+            $builder
+                ->add('aboutMe')
+                ->add('name')
+            ;
+        }
+
         if (
             !$this->security->getUser()
             || (
