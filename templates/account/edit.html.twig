@@ -11,7 +11,14 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="container mt-5 px-0">{{ title|trans }}</h1>
+    <div class="container mt-5 px-0">
+        <h1 class="d-inline-block">{{ title|trans }}</h1>
+        {% if not app.user %}
+            <a href="{{ url('account.login') }}" class="text-secondary d-inline-block">
+                {{ 'action.already_have_an_account'|trans }}
+            </a>
+        {% endif %}
+    </div>
 
     <div class="card container mx-auto pt-3">
         {{ form_start(form) }}
