@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% set title %}{{ 'title.home'|trans }}{% endset %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <h1 class="container mt-5 px-0">Welcome {{ app.user }}.</h1>
+    {% endif %}
+
+    <div class="card container mx-auto pt-3 {{ not app.user ? 'mt-5' }}">
+        <span class="pb-3">Awesome stuff here!</span>
+    </div>
+{% endblock %}
