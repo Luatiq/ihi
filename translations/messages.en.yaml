@@ -5,6 +5,8 @@ title:
   home: "Home"
   users: "Users"
   user: "User"
+  bucketlist: "Bucket list"
+  ihi: "I hope I"
 
 button:
   register: "Register"
@@ -20,6 +22,7 @@ label:
   repeat_password: "Repeat password"
   change_password: "Change password"
   actions: "Actions"
+  display: "Display"
 
 error:
   passwords_must_match: "Passwords must match"

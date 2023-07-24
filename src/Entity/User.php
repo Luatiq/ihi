@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,6 +35,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bucketlist::class)]
+    private Collection $bucketlists;
+
+    public function __construct()
+    {
+        $this->bucketlists = new ArrayCollection();
+    }
 
     public function __toString(): string {
         return $this->getUserIdentifier();
@@ -128,6 +138,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(?string $name): self
     {
         $this->name = $name ?? $this->getUserIdentifier();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bucketlist>
+     */
+    public function getBucketlists(): Collection
+    {
+        return $this->bucketlists;
+    }
+
+    public function hasBucketlists(): bool {
+        return $this->bucketlists->count() > 0;
+    }
+
+    public function addBucketlist(Bucketlist $bucketlist): self
+    {
+        if (!$this->bucketlists->contains($bucketlist)) {
+            $this->bucketlists->add($bucketlist);
+            $bucketlist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBucketlist(Bucketlist $bucketlist): self
+    {
+        if ($this->bucketlists->removeElement($bucketlist)) {
+            // set the owning side to null (unless already changed)
+            if ($bucketlist->getUser() === $this) {
+                $bucketlist->setUser(null);
+            }
+        }
 
         return $this;
     }
