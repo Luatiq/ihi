@@ -23,6 +23,10 @@ label:
   change_password: "Change password"
   actions: "Actions"
   display: "Display"
+  bucketlist_item:
+    description: "Description"
+    display: "I hope I"
+    date: "Deadline"
 
 error:
   passwords_must_match: "Passwords must match"

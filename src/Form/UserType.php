@@ -66,7 +66,7 @@ class UserType extends AbstractType
         }
 
         $builder
-            ->add('submit', SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => $entity->getId() ? 'button.save' : 'button.register',
                 'attr' => [
                     'class' => 'btn-primary',

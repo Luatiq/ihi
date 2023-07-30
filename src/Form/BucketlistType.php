@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 class BucketlistType extends AbstractType
 {
@@ -15,10 +16,13 @@ class BucketlistType extends AbstractType
         $builder
             ->add('display')
             ->add('description')
-            ->add('submit', SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn-primary',
                 ],
+            ])
+            ->add('bucketlistItems', LiveCollectionType::class, [
+                'entry_type' => BucketlistItemType::class,
             ])
         ;
     }

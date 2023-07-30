@@ -10,9 +10,8 @@
     <h1 class="container mt-5 px-0">{{ title|trans }}</h1>
 
     <div class="card container mx-auto pt-3">
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-
-        {{ form_end(form) }}
+        {{ component('BucketlistForm', {
+            initialFormData: form.vars.data
+        }) }}
     </div>
 {% endblock %}

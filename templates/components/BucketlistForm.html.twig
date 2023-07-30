@@ -1,0 +1,13 @@
+<div {{ attributes }}>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.display) }}
+    {{ form_row(form.description) }}
+
+    {{ form_widget(form.bucketlistItems, {options: {label: false}}) }}
+
+    {{ form_row(form.save) }}
+
+    {{ form_end(form) }}
+</div>

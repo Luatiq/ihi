@@ -36,7 +36,12 @@ class Bucketlist
     #[ORM\ManyToOne(inversedBy: 'bucketlists')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'bucketList', targetEntity: BucketlistItem::class, orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'bucketList',
+        targetEntity: BucketlistItem::class,
+        cascade: ['persist'],
+        orphanRemoval: true)
+    ]
     private Collection $bucketlistItems;
 
     public function __construct()
