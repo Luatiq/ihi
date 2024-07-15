@@ -112,7 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -135,8 +135,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(?string $name = null): self
     {
+        if ($this->name && !$name) {
+            return $this;
+        }
+
         $this->name = $name ?? $this->getUserIdentifier();
 
         return $this;
