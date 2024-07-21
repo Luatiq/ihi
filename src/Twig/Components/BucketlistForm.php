@@ -32,7 +32,7 @@ class BucketlistForm extends AbstractController
     }
 
     #[LiveAction]
-    public function addCollectionItem()
+    public function addCollectionItem(): void
     {
         $bucketlistItem = new BucketlistItem();
         $bucketlistItem->setBucketList($this->initialFormData);
