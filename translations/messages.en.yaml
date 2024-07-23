@@ -15,6 +15,7 @@ button:
   logout: "Log out"
   edit: "Edit"
   delete: "Delete"
+  share: "Share"
 
 label:
   username: "Username"
@@ -34,3 +35,7 @@ error:
 action:
   dont_have_an_account: "I don't have an account."
   already_have_an_account: "I already have an account."
+
+modal:
+  close: "Close"
+  confirm: "Confirm"

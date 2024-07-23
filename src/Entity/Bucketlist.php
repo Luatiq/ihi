@@ -44,6 +44,9 @@ class Bucketlist
     ]
     private Collection $bucketlistItems;
 
+    #[ORM\OneToOne(mappedBy: 'Bucketlist', cascade: ['persist', 'remove'])]
+    private ?ShareBucketlist $shareBucketlist = null;
+
     public function __construct()
     {
         $this->bucketlistItems = new ArrayCollection();
@@ -144,6 +147,23 @@ class Bucketlist
                 $bucketlistItem->setBucketList(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShareBucketlist(): ?ShareBucketlist
+    {
+        return $this->shareBucketlist;
+    }
+
+    public function setShareBucketlist(ShareBucketlist $shareBucketlist): static
+    {
+        // set the owning side of the relation if necessary
+        if ($shareBucketlist->getBucketlist() !== $this) {
+            $shareBucketlist->setBucketlist($this);
+        }
+
+        $this->shareBucketlist = $shareBucketlist;
 
         return $this;
     }

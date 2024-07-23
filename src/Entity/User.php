@@ -39,9 +39,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Bucketlist::class)]
     private Collection $bucketlists;
 
+    /**
+     * @var Collection<int, ShareBucketlist>
+     */
+    #[ORM\ManyToMany(targetEntity: ShareBucketlist::class, mappedBy: 'Users')]
+    private Collection $shareBucketlists;
+
     public function __construct()
     {
         $this->bucketlists = new ArrayCollection();
+        $this->shareBucketlists = new ArrayCollection();
     }
 
     public function __toString(): string {
@@ -175,6 +182,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($bucketlist->getUser() === $this) {
                 $bucketlist->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ShareBucketlist>
+     */
+    public function getShareBucketlists(): Collection
+    {
+        return $this->shareBucketlists;
+    }
+
+    public function addShareBucketlist(ShareBucketlist $shareBucketlist): static
+    {
+        if (!$this->shareBucketlists->contains($shareBucketlist)) {
+            $this->shareBucketlists->add($shareBucketlist);
+            $shareBucketlist->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShareBucketlist(ShareBucketlist $shareBucketlist): static
+    {
+        if ($this->shareBucketlists->removeElement($shareBucketlist)) {
+            $shareBucketlist->removeUser($this);
         }
 
         return $this;

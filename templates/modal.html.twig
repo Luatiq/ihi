@@ -1,0 +1,29 @@
+<div
+    class="modal fade"
+    tabindex="-1"
+    aria-hidden="true"
+    data-modal-form-target="modal"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">{{ modalTitle }}</h1>
+                <button type="button" class="btn-close fs-5"
+                        data-bs-dismiss="modal"
+                        aria-label="{{ 'modal.close'|trans }}"></button>
+            </div>
+            <div class="modal-body fs-5" data-modal-form-target="modalBody">
+                {{ modalContent|default('Loading..') }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    {{ closeLabel|default('model.close'|trans) }}
+                </button>
+                <button type="button" class="btn btn-primary">
+                    {{ confirmLabel|default('model.confirm'|trans) }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
