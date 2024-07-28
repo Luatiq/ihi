@@ -167,4 +167,16 @@ class Bucketlist
 
         return $this;
     }
+
+    public function getShareBucketlistNotNull(): ShareBucketlist
+    {
+        if ($this->shareBucketlist) {
+            return $this->shareBucketlist;
+        }
+
+        $shareBucketlist = new ShareBucketlist();
+        $shareBucketlist->setBucketlist($this);
+
+        return $shareBucketlist;
+    }
 }

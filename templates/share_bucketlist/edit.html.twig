@@ -1,0 +1,11 @@
+{% if not form.vars.data.uuid %}
+    <a href="{{ path('bucketlist.share.create_link', { bucketlist: form.vars.data.bucketlist.id }) }}" target="_blank">Create link!</a>
+{% else %}
+    uuid is: {{ form.vars.data.uuid }}
+{% endif %}
+
+{{ form_start(form) }}
+
+{{ form_errors(form) }}
+
+{{ form_end(form) }}

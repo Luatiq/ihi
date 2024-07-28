@@ -16,6 +16,24 @@ class ShareBucketlistRepository extends ServiceEntityRepository
         parent::__construct($registry, ShareBucketlist::class);
     }
 
+    public function save(ShareBucketlist $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(ShareBucketlist $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return ShareBucketlist[] Returns an array of ShareBucketlist objects
 //     */

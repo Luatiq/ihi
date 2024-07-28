@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ShareBucketlistRepository::class)]
 class ShareBucketlist
@@ -56,9 +57,9 @@ class ShareBucketlist
         return $this->uuid;
     }
 
-    public function setUuid(?string $uuid): static
+    public function setUuid(?string $uuid = null): static
     {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid ?? Uuid::v4();
 
         return $this;
     }

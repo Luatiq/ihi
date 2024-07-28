@@ -10,17 +10,19 @@
     <h1 class="container mt-5 px-0">
         {{ title|trans }}
 
-        <div {{ stimulus_controller('modal-form', {
-            formUrl: path('bucketlist.share.edit', { bucketlist: form.vars.data.id })
-        }) }}>
-            <button class="btn btn-sm btn-primary float-right"
-                data-action="modal-form#openModal"
-            >{{ 'button.share'|trans }}</button>
-
-            {{ include('modal.html.twig', {
-                modalTitle: "Share"
-            }) }}
-        </div>
+        {% if form.vars.data.id %}
+            <div {{ stimulus_controller('modal-form', {
+                formUrl: path('bucketlist.share.edit', { bucketlist: form.vars.data.id, entity: form.vars.data.id })
+            }) }}>
+                <button class="btn btn-sm btn-primary float-right"
+                    data-action="modal-form#openModal"
+                >{{ 'button.share'|trans }}</button>
+    
+                {{ include('modal.html.twig', {
+                    modalTitle: "Share"
+                }) }}
+            </div>
+        {% endif %}
     </h1>
 
     <div class="card container mx-auto pt-3">
