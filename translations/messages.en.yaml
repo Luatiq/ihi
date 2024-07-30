@@ -16,6 +16,7 @@ button:
   edit: "Edit"
   delete: "Delete"
   share: "Share"
+  create_link: "Create link"
 
 label:
   username: "Username"

@@ -11,9 +11,7 @@
         {{ title|trans }}
 
         {% if form.vars.data.id %}
-            <div {{ stimulus_controller('modal-form', {
-                formUrl: path('bucketlist.share.edit', { bucketlist: form.vars.data.id, entity: form.vars.data.id })
-            }) }}>
+            <div {{ stimulus_controller('modal-form') }}>
                 <button class="btn btn-sm btn-primary float-right"
                     data-action="modal-form#openModal"
                 >{{ 'button.share'|trans }}</button>

@@ -9,7 +9,6 @@ use App\Repository\BucketlistRepository;
 use App\Repository\ShareBucketlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,20 +54,6 @@ class ShareBucketlistController extends AbstractController
 
         return $this->render('share_bucketlist/edit.html.twig', [
             'form' => $form,
-        ]);
-    }
-
-    #[Route('/{bucketlist}/create-link', name: '.create_link')]
-    public function createLink(
-        Bucketlist $bucketlist
-    ): JsonResponse {
-        $entity = $bucketlist->getShareBucketlistNotNull();
-        $entity->setUuid();
-
-        $this->repository->save($entity, true);
-
-        return new JsonResponse([
-            'link' => 'linkhere'
         ]);
     }
 }

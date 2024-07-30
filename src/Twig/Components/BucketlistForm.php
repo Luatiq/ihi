@@ -41,7 +41,7 @@ class BucketlistForm extends AbstractController
     }
 
     #[LiveAction]
-    public function removeCollectionItem(#[LiveArg] int $index)
+    public function removeCollectionItem(#[LiveArg] int $index): void
     {
         unset($this->formValues['bucketlistItems'][$index]);
     }

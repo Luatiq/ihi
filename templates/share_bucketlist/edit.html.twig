@@ -1,5 +1,8 @@
 {% if not form.vars.data.uuid %}
-    <a href="{{ path('bucketlist.share.create_link', { bucketlist: form.vars.data.bucketlist.id }) }}" target="_blank">Create link!</a>
+    <button type="button" class="btn btn-primary" data-action="modal-form#toggleLink">
+        {{ 'button.create_link'|trans }}
+    </button>
+{#    <a href="{{ path('bucketlist.share.toggle_link', { bucketlist: form.vars.data.bucketlist.id }) }}" target="_blank">Create link!</a>#}
 {% else %}
     uuid is: {{ form.vars.data.uuid }}
 {% endif %}

@@ -15,17 +15,16 @@
             <div
                 class="modal-body fs-5"
                 data-modal-form-target="modalBody"
-                data-action="submit->modal-form#submitForm"
             >
-                {{ modalContent|default('Loading..') }}
+                {{ component('ShareBucketlistForm', {
+                    initialFormData: form.vars.data.shareBucketlist,
+                    bucketlistId: form.vars.data.id
+                }) }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">
                     {{ closeLabel|default('model.close'|trans) }}
-                </button>
-                <button type="button" class="btn btn-primary" data-action="modal-form#submitForm">
-                    {{ confirmLabel|default('model.confirm'|trans) }}
                 </button>
             </div>
         </div>
